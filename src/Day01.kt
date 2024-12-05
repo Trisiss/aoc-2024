@@ -1,18 +1,31 @@
+import kotlin.math.absoluteValue
+
 fun main() {
     fun part1(input: List<String>): Int {
-        return input.size
+        val leftColumn = mutableListOf<Int>()
+        val rightColumn = mutableListOf<Int>()
+        input.forEach {
+            val numbers = it.split("   ")
+            leftColumn.add(numbers.first().toInt())
+            rightColumn.add(numbers.last().toInt())
+        }
+        leftColumn.sort()
+        rightColumn.sort()
+        return leftColumn.zip(rightColumn).fold(0) { acc, pair ->
+            acc + (pair.first - pair.second).absoluteValue
+        }
     }
 
     fun part2(input: List<String>): Int {
-        return input.size
+        val leftColumn = mutableListOf<Int>()
+        val rightColumn = mutableListOf<Int>()
+        input.forEach {
+            val numbers = it.split("   ")
+            leftColumn.add(numbers.first().toInt())
+            rightColumn.add(numbers.last().toInt())
+        }
+        return leftColumn.sumOf { leftInt -> rightColumn.count { leftInt == it } * leftInt }
     }
-
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
-
-    // Or read a large test input from the `src/Day01_test.txt` file:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
 
     // Read the input from the `src/Day01.txt` file.
     val input = readInput("Day01")
