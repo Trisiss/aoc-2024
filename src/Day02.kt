@@ -1,4 +1,3 @@
-import kotlin.math.abs
 import kotlin.math.absoluteValue
 
 fun main() {
@@ -6,8 +5,7 @@ fun main() {
         var countSafe = 0
         input.forEach {
             val levels = it.split(" ").map { s -> s.toInt() }
-            if (isSafe(levels))
-            countSafe++
+            if (isSafe(levels)) countSafe++
         }
         return countSafe
     }
@@ -16,12 +14,10 @@ fun main() {
         var countSafe = 0
         input.forEach {
             val levels = it.split(" ").map { s -> s.toInt() }
-           if (isSafe(levels, true))
-            countSafe++
+            if (isSafe(levels, allowUnsafeLevel = true)) countSafe++
         }
         return countSafe
     }
-
 
 
     // Read the input from the `src/Day01.txt` file.
@@ -30,36 +26,33 @@ fun main() {
     part2(input).println()
 }
 
-    fun isSafe(levels: List<Int>, allowUnsafeLevel: Boolean = false): Boolean {
-        var isSafe = false
-        if (allowUnsafeLevel) {
-            for (i in levels.indices) {
-                val skip = levels.toMutableList().apply { removeAt(i) }
-                isSafe = isSafe || checkLevels(skip)
-            }
-        } else {
-            isSafe = checkLevels(levels)
+fun isSafe(levels: List<Int>, allowUnsafeLevel: Boolean = false): Boolean {
+    var isSafe = false
+    if (allowUnsafeLevel) {
+        for (i in levels.indices) {
+            val skip = levels.toMutableList().apply { removeAt(i) }
+            isSafe = isSafe || checkLevels(skip)
         }
-        return isSafe
+    } else {
+        isSafe = checkLevels(levels)
     }
+    return isSafe
+}
 
-    fun checkLevels(levels: List<Int>): Boolean {
-        var isBiggest = true
-        var isSmallest = true
-        for (leftIndex in 0 until levels.lastIndex) {
-            val rightIndex = leftIndex + 1
-            val leftValue = levels[leftIndex]
-            val rightValue = levels[rightIndex]
-            if (abs(leftValue - rightValue) !in 1..3) {
-                return false
-            }
-            isBiggest = isBiggest && rightValue > leftValue
-            isSmallest = isSmallest && leftValue > rightValue
-            if (!isBiggest && !isSmallest) {
-                return false
-            }
+fun checkLevels(levels: List<Int>): Boolean {
+    var isUp = true
+    var isDown = true
+    for (leftIndex in 0 until levels.lastIndex) {
+        val leftValue = levels[leftIndex]
+        val rightValue = levels[leftIndex + 1]
+        if ((leftValue - rightValue).absoluteValue !in 1..3) {
+            return false
         }
-        return true
+        isUp = isUp && rightValue > leftValue
+        isDown = isDown && leftValue > rightValue
+        if (!isUp && !isDown) {
+            return false
+        }
     }
-
-val NO_VALUE = -1 to -1
+    return true
+}
