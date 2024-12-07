@@ -22,17 +22,19 @@ fun main() {
                     enableMul = false
                     0
                 }
+
                 doReg.containsMatchIn(it.value) -> {
                     enableMul = true
                     0
                 }
+
                 reg.containsMatchIn(it.value) -> {
                     if (!enableMul) {
                         return@sumOf 0
                     }
-//                    enableMul = false
                     mul(it)
                 }
+
                 else -> error("Not found regex for $it 10916163")
             }
 
@@ -42,7 +44,7 @@ fun main() {
 
     // Read the input from the `src/Day03.txt` file.
     val input = readInputText("Day03")
-//    part1(input).println()
+    part1(input).println()
     part2(input).println()
 }
 
